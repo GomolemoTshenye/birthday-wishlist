@@ -182,3 +182,4 @@ window.removeReservation = function(index, event) {
     // Push the update to Firebase!
     set(dbRef, gifts);
 };
+//UPDATED
