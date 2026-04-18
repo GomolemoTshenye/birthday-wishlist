@@ -62,11 +62,11 @@ const defaultGifts = [
         reservedBy: null
     },
     {
-        name: "PS5 Dualsense Astrobot Joyful LTD EDT",
-        price: "R1,499.00",
+        name: "Nike Air Max Plus",
+        price: "R3,699.00",
         description: "Chat online w/built-in microphone,Connect a headset via the 3.5mm jack,Switch voice capture on & off",
-        imageUrl: "https://www.incredible.co.za/api/catalog/product/d/u/dualsense_le_abn2_0_pr_01_cmyk_20250428_ecommerce_8d87.png?width=808&height=538&store=incredibleconnection&image-type=image",
-        buyUrl: "https://www.incredible.co.za/ps5-dualsense-astrobot-joyful-ltd-edt?gad_source=1&gad_campaignid=17190957074&gbraid=0AAAAADI0iFZ5V7m25p-SkiFr00WDgsfvC&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb4InZa0BmBN7rtoyrfyTEmSVksIKhJViTePtxzPpwxnRgfZBRxhvJxoCTscQAvD_BwE", 
+        imageUrl: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/906a4fd5-78cd-4ae2-8384-9ef78e18d3c8/NIKE+AIR+MAX+PLUS.png",
+        buyUrl: "https://www.nike.com/za/t/air-max-plus-shoes-vGsr6j/DM0032-041?cp=58035018898_search_&Macro=--g-10713072411-105214596949--c-EN-gsgeneric-453305181992-pla-333563063426-1028682-00198730500430&dplnk=member&gclsrc=aw.ds&ds_rl=1252249&gad_source=1&gad_campaignid=10713072411&gbraid=0AAAAADq9vlPNp0nVGQ84T-4NZzkeGRtdh&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb9w2kPFIFP5LC21yNYk_ifRmU5DFevQYyHmIR5PvGuVtvgaAHrrW1BoCot0QAvD_BwE", 
         reservedBy: null 
     },
     {
