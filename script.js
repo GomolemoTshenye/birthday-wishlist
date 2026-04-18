@@ -1,11 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// Import Firebase tools directly from the web
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Your exact Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDwmtLuYiHr01sz0bNlyrMYpW3oY19Y5TU",
   authDomain: "gbirthdaywishlist.firebaseapp.com",
@@ -20,9 +17,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const dbRef = ref(db, 'birthdayGifts'); // This is the 'folder' in your database
+const dbRef = ref(db, 'birthdayGifts'); 
 
-// Your default list of gifts
+// Your full list of gifts
 const defaultGifts = [
     {
         name: "PS5 Dualsense Astrobot Joyful LTD EDT",
@@ -65,11 +62,11 @@ const defaultGifts = [
         reservedBy: null
     },
     {
-        name: "Nike Air Max Plus",
-        price: "R3,699.00",
-        description: "Size UK7",
-        imageUrl: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/906a4fd5-78cd-4ae2-8384-9ef78e18d3c8/NIKE+AIR+MAX+PLUS.png",
-        buyUrl: "https://www.nike.com/za/t/air-max-plus-shoes-vGsr6j/DM0032-041?cp=58035018898_search_&Macro=--g-10713072411-105214596949--c-EN-gsgeneric-453305181992-pla-333563063426-1028682-00198730500430&dplnk=member&gclsrc=aw.ds&ds_rl=1252249&gad_source=1&gad_campaignid=10713072411&gbraid=0AAAAADq9vlPNp0nVGQ84T-4NZzkeGRtdh&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb9w2kPFIFP5LC21yNYk_ifRmU5DFevQYyHmIR5PvGuVtvgaAHrrW1BoCot0QAvD_BwE", 
+        name: "PS5 Dualsense Astrobot Joyful LTD EDT",
+        price: "R1,499.00",
+        description: "Chat online w/built-in microphone,Connect a headset via the 3.5mm jack,Switch voice capture on & off",
+        imageUrl: "https://www.incredible.co.za/api/catalog/product/d/u/dualsense_le_abn2_0_pr_01_cmyk_20250428_ecommerce_8d87.png?width=808&height=538&store=incredibleconnection&image-type=image",
+        buyUrl: "https://www.incredible.co.za/ps5-dualsense-astrobot-joyful-ltd-edt?gad_source=1&gad_campaignid=17190957074&gbraid=0AAAAADI0iFZ5V7m25p-SkiFr00WDgsfvC&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb4InZa0BmBN7rtoyrfyTEmSVksIKhJViTePtxzPpwxnRgfZBRxhvJxoCTscQAvD_BwE", 
         reservedBy: null 
     },
     {
@@ -169,9 +166,6 @@ window.reserveItem = function(index, event) {
         
         // Push the update to Firebase!
         set(dbRef, gifts);
-        
-        // Note: We don't call renderGifts() here anymore because Firebase's onValue() function 
-        // detects the change and redraws the screen automatically!
     } else {
         alert("Please enter both your name and surname to reserve this gift!");
     }
