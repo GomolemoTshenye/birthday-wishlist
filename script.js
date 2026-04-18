@@ -111,7 +111,9 @@ function renderGifts() {
         const card = document.createElement('div');
         card.classList.add('gift-card');
 
-        if (gift.reservedBy !== null) {
+        // 👇 THE FIX IS ON THIS LINE 👇
+        // By just saying "if (gift.reservedBy)", it protects against both null AND undefined!
+        if (gift.reservedBy) {
             card.classList.add('reserved');
             card.innerHTML = `
                 <img src="${gift.imageUrl}" alt="${gift.name}" class="gift-image">
