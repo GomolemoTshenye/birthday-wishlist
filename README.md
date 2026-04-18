@@ -22,16 +22,7 @@ A sleek, responsive web application designed to act as an interactive birthday g
 ### Prerequisites
 To run this project locally, you only need a modern web browser (Chrome, Firefox, Safari, Edge). No backend server or dependencies are required.
 
-### Installation & Execution
-1. Clone the repository:
-   \`\`\`bash
-   git clone https://github.com/yourusername/vip-birthday-shop.git
-   \`\`\`
-2. Navigate to the project directory:
-   \`\`\`bash
-   cd vip-birthday-shop
-   \`\`\`
-3. Open `index.html` in your preferred web browser.
+
 
 ## 📁 Project Structure
 
