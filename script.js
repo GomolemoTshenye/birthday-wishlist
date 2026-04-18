@@ -1,4 +1,28 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDwmtLuYiHr01sz0bNlyrMYpW3oY19Y5TU",
+  authDomain: "gbirthdaywishlist.firebaseapp.com",
+  databaseURL: "https://gbirthdaywishlist-default-rtdb.firebaseio.com",
+  projectId: "gbirthdaywishlist",
+  storageBucket: "gbirthdaywishlist.firebasestorage.app",
+  messagingSenderId: "1064464835080",
+  appId: "1:1064464835080:web:e41ae34b29d7cb4fc4e7bd",
+  measurementId: "G-XP50ZVBKMG"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const dbRef = ref(db, 'birthdayGifts'); // This is the 'folder' in your database
+
+// Your default list of gifts
 const defaultGifts = [
     {
         name: "PS5 Dualsense Astrobot Joyful LTD EDT",
@@ -41,25 +65,47 @@ const defaultGifts = [
         reservedBy: null
     },
     {
-        name: "PS5 Dualsense Astrobot Joyful LTD EDT",
-        price: "R1,499.00",
-        description: "Chat online w/built-in microphone,Connect a headset via the 3.5mm jack,Switch voice capture on & off",
-        imageUrl: "https://www.incredible.co.za/api/catalog/product/d/u/dualsense_le_abn2_0_pr_01_cmyk_20250428_ecommerce_8d87.png?width=808&height=538&store=incredibleconnection&image-type=image",
-        buyUrl: "https://www.incredible.co.za/ps5-dualsense-astrobot-joyful-ltd-edt?gad_source=1&gad_campaignid=17190957074&gbraid=0AAAAADI0iFZ5V7m25p-SkiFr00WDgsfvC&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb4InZa0BmBN7rtoyrfyTEmSVksIKhJViTePtxzPpwxnRgfZBRxhvJxoCTscQAvD_BwE", 
+        name: "Nike Air Max Plus",
+        price: "R3,699.00",
+        description: "Size UK7",
+        imageUrl: "https://static.nike.com/a/images/t_web_pdp_535_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/906a4fd5-78cd-4ae2-8384-9ef78e18d3c8/NIKE+AIR+MAX+PLUS.png",
+        buyUrl: "https://www.nike.com/za/t/air-max-plus-shoes-vGsr6j/DM0032-041?cp=58035018898_search_&Macro=--g-10713072411-105214596949--c-EN-gsgeneric-453305181992-pla-333563063426-1028682-00198730500430&dplnk=member&gclsrc=aw.ds&ds_rl=1252249&gad_source=1&gad_campaignid=10713072411&gbraid=0AAAAADq9vlPNp0nVGQ84T-4NZzkeGRtdh&gclid=CjwKCAjw14zPBhAuEiwAP3-Eb9w2kPFIFP5LC21yNYk_ifRmU5DFevQYyHmIR5PvGuVtvgaAHrrW1BoCot0QAvD_BwE", 
         reservedBy: null 
     },
-        {
+    {
         name: "KWV 20 Year Old Brandy",
         price: "R1,699.00",
         description: "KWV XXO 20 is something very special. Double-distilled potstill brandy matured in French oak barrels for 20 years. The dedication, time and craftsmanship required to create this brandy shows in its premium taste.",
         imageUrl: "https://kwv.co.za/wp-content/uploads/2023/02/KWV-20-YO.jpg",
         buyUrl: "https://kwv.co.za/product/kwv-xxo-20-yo-brandy/", 
         reservedBy: null 
-    },
+    }
 ];
 
-let gifts = JSON.parse(localStorage.getItem('birthdayGifts')) || defaultGifts;
+let gifts = [];
 
+// ----------------------------------------------------
+// LISTEN FOR REAL-TIME DATABASE UPDATES
+// ----------------------------------------------------
+onValue(dbRef, (snapshot) => {
+    const data = snapshot.val();
+    
+    // If there is data in the database, use it.
+    if (data) {
+        gifts = data;
+    } else {
+        // If the database is completely empty, use our default array and upload it to Firebase!
+        gifts = defaultGifts;
+        set(dbRef, gifts);
+    }
+    
+    // Re-draw the screen every time the data updates
+    renderGifts();
+});
+
+// ----------------------------------------------------
+// RENDERING LOGIC
+// ----------------------------------------------------
 function renderGifts() {
     const container = document.getElementById('gift-container');
     container.innerHTML = ''; 
@@ -108,6 +154,9 @@ function renderGifts() {
     });
 }
 
+// ----------------------------------------------------
+// RESERVATION BUTTON LOGIC
+// ----------------------------------------------------
 window.reserveItem = function(index, event) {
     event.stopPropagation(); 
 
@@ -115,26 +164,25 @@ window.reserveItem = function(index, event) {
     const surnameInput = document.getElementById(`surname-${index}`).value.trim();
 
     if (nameInput !== "" && surnameInput !== "") {
+        // Update the array locally
         gifts[index].reservedBy = `${nameInput} ${surnameInput}`;
-        localStorage.setItem('birthdayGifts', JSON.stringify(gifts));
-        renderGifts();
+        
+        // Push the update to Firebase!
+        set(dbRef, gifts);
+        
+        // Note: We don't call renderGifts() here anymore because Firebase's onValue() function 
+        // detects the change and redraws the screen automatically!
     } else {
         alert("Please enter both your name and surname to reserve this gift!");
     }
 };
 
-// NEW: Function to remove a reservation
 window.removeReservation = function(index, event) {
-    event.stopPropagation(); // Stop the card from opening the store link
+    event.stopPropagation(); 
     
-    // Set the reserved status back to null
+    // Set the reserved status back to null locally
     gifts[index].reservedBy = null;
     
-    // Save the cleared status to localStorage
-    localStorage.setItem('birthdayGifts', JSON.stringify(gifts));
-    
-    // Redraw the screen to show the inputs again
-    renderGifts();
+    // Push the update to Firebase!
+    set(dbRef, gifts);
 };
-
-renderGifts();
